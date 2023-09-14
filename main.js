@@ -1,29 +1,15 @@
-import "./style.css";
 import { animate, timeline } from "motion";
 import gsap from "gsap";
+
 window.addEventListener("load", (e) => {
   const kiryuTattooContainer = document.getElementById(
     "kiryu-tattoo-container"
   );
   const kiryuTattoo = document.getElementById("kiryu-tattoo");
+  const playBtn = document.getElementById("play-btn");
+  const audio = document.getElementById("audio");
 
   const tl = new gsap.timeline();
-  // tl.from(kiryuTattooContainer, {
-  //   x: "150%",
-  //   duration: 1,
-  //   ease: "power2.Out",
-  //   // onComplete() {
-  //   //   timeline([[".cls-1", draw(1), { duration: 2 }]]);
-  //   // },
-  // }).to(
-  //   kiryuTattooContainer,
-  //   {
-  //     x: "-100%",
-  //     duration: 2,
-  //     ease: "power2.Out",
-  //   },
-  //   "<4"
-  // );
 
   timeline([
     [kiryuTattooContainer, { x: "100%" }, { duration: 0.0001 }],
@@ -43,6 +29,30 @@ window.addEventListener("load", (e) => {
       { duration: 1, easing: "ease-in-out", delay: 0.5 },
     ],
   ]);
+
+  playBtn.addEventListener("click", (e) => {
+    const newElement = document.createElement("img");
+
+    // Set some content or attributes to the new element
+    newElement.src = "./kiryu-img-1.gif";
+    newElement.id = "new img";
+    newElement.className = "animation";
+
+    // Append the new element to the body or any other desired location
+    document.getElementById("animation-container").appendChild(newElement);
+
+    animate(
+      newElement,
+      { x: "100vw" },
+      { duration: 2 },
+      { easing: "ease-out" }
+    ).finished.then(() => {
+      newElement.remove();
+    });
+
+    const audioEl = new Audio("./kiryu-sound-1.mp3");
+    audioEl.play();
+  });
 
   // end of load listener
 });

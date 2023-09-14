@@ -63,6 +63,12 @@ body {
   z-index: -1;
   fill: var(--kiryu-jacked-dark);
 }
+
+.animation {
+  position: absolute;
+  left: 0;
+}
+
 /* #kiryu-tattoo-path {
   fill: transparent;
   stroke: var(--kiryu-jacket);
