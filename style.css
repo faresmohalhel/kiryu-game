@@ -27,7 +27,7 @@ body {
 #kiryu-tattoo-container {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 100%;
   bottom: 0;
   right: 0;
   background: radial-gradient(
@@ -45,7 +45,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
+  /* visibility: hidden; */
+  opacity: 0;
 }
 
 #kiryu-tattoo {

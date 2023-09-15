@@ -27,8 +27,8 @@ window.addEventListener("load", (e) => {
   }
 
   timeline([
-    [kiryuTattooContainer, { x: "100%" }, { duration: 0.0001 }],
-    [kiryuTattooContainer, { x: "0" }, { duration: 1 }],
+    [kiryuTattooContainer, { opacity: 1 }, { duration: 0.1 }],
+    [kiryuTattooContainer, { x: "-100%", opacity: 1 }, { duration: 1.5 }],
     // [
     //   "path",
     //   {
@@ -38,11 +38,7 @@ window.addEventListener("load", (e) => {
     //   },
     //   { duration: 3 },
     // ],
-    [
-      kiryuTattooContainer,
-      { x: "-100%" },
-      { duration: 1, easing: "ease-in-out", delay: 0.5 },
-    ],
+    [kiryuTattooContainer, { x: "-200%" }, { opacity: 1, duration: 1 }],
   ]);
 
   const updateCounter = () => {
