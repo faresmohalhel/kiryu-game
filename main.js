@@ -10,9 +10,19 @@ window.addEventListener("load", (e) => {
   const kiryuTattoo = document.getElementById("kiryu-tattoo");
   const playBtn = document.getElementById("play-btn");
   const audio = document.getElementById("audio");
+  const counter = document.getElementById("click-counter");
   const tl = new gsap.timeline();
 
   const cachedAssets = {};
+
+  let count = 0;
+  const localCounter = localStorage.getItem("counter");
+  if (localCounter) {
+    counter.textContent = "...";
+    count = JSON.parse(localCounter);
+
+    counter.textContent = count;
+  }
 
   timeline([
     [kiryuTattooContainer, { x: "100%" }, { duration: 0.0001 }],
@@ -32,6 +42,13 @@ window.addEventListener("load", (e) => {
       { duration: 1, easing: "ease-in-out", delay: 0.5 },
     ],
   ]);
+
+  const updateCounter = () => {
+    const number = count;
+    counter.innerText = count + 1;
+    count++;
+    localStorage.setItem("counter", count);
+  };
 
   async function fetchAndCacheResources(imageUrl, audioUrl, mediaSelector) {
     try {
@@ -100,9 +117,15 @@ window.addEventListener("load", (e) => {
       console.log(imageUrlBlob, audioUrlBlob);
 
       const imgElement = document.createElement("img");
+
+      // imgElement.src = imageUrlBlob;
+
+      // testing
       imgElement.src = imageUrlBlob;
       imgElement.className = "animation";
 
+      // const audioElement = new Audio(audioUrlBlob);
+      // testing
       const audioElement = new Audio(audioUrlBlob);
       audioElement.crossOrigin = "anonymous";
 
@@ -128,7 +151,7 @@ window.addEventListener("load", (e) => {
         [
           imgElement,
           { x: "35vw" },
-          { duration: 3 },
+          { duration: 1 },
           { easing: "ease-in" },
           { transformOrigin: "center center" },
         ],
@@ -136,6 +159,8 @@ window.addEventListener("load", (e) => {
       ]).finished.then(() => {
         imgElement.remove();
         audioElement.remove();
+        URL.revokeObjectURL(new Blob([image.blob]));
+        URL.revokeObjectURL(new Blob([audio.blob]));
       });
 
       // const audioEl = new Audio("./sound/kiryu-1.mp3");
@@ -152,7 +177,11 @@ window.addEventListener("load", (e) => {
 
   playBtn.addEventListener("click", (e) => {
     // playAnimation("./assets/img/kiryu-1.gif", "./assets/sound/kiryu-1.mp3", 1);
-    playAnimation(1);
+    updateCounter();
+
+    const mediaSelector = Math.floor(Math.random() * 4 + 1);
+
+    playAnimation(mediaSelector === 4 ? 3 : mediaSelector);
   });
 
   // end of load listener

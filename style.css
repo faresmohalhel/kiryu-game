@@ -64,9 +64,14 @@ body {
   fill: var(--kiryu-jacked-dark);
 }
 
+.animation-container {
+  /* position: relative; */
+  position: relativee;
+}
+
 .animation {
+  max-width: 256px;
   position: absolute;
-  left: 0;
 }
 
 /* #kiryu-tattoo-path {

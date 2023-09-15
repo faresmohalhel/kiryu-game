@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css" />
     <title>The kiryu game</title>
   </head>
-  <body class="pt-3">
+  <body class="pt-3 text-center">
     <header>
       <nav>
         <ul
@@ -31,10 +31,19 @@
         the man who <span class="line-through">erased his name</span> can't rest
       </div>
     </div>
+    <div
+      class="flex justify-center mx-auto uppercase font-semibold text-xl lg:text-3xl"
+    >
+      kiryu has been summoned&NonBreakingSpace;<span
+        class="text-kiryu-shirt-light"
+        id="click-counter"
+        >0</span
+      >&NonBreakingSpace;times
+    </div>
     <div class="crest overflow-hidden">
       <use href="tojo-clan-crest" id="crest-container"></use>
     </div>
-    <div class="animation-container" id="animation-container"></div>
+    <div class="animation-container pt-24" id="animation-container"></div>
     <button
       id="play-btn"
       class="bg-kiryu-shirt-light hover:bg-kiryu-shirt absolute bottom-24 right-1/2 translate-x-[50%] duration-200 p-6 mx-auto rounded-lg text-kiryu-jacket font-bold uppercase hover:text-kiryu-jacket flex justify-center items-center"
@@ -54,7 +63,7 @@
 
     <svg
       id="tojo-clan-crest"
-      class="top-[-10%] right-[-25vw] lg:w-[75vw]"
+      class="bottom-[25%] lg:top-[-10%] right-0 lg:right-[-25vw] lg:w-[75vw]"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 775.12 775.1"
     >
