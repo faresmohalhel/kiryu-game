@@ -14,6 +14,8 @@ window.addEventListener("load", (e) => {
   const tl = new gsap.timeline();
 
   const cachedAssets = {};
+  const cachedImages = [];
+  const cachedSounds = [];
 
   let count = 0;
   const localCounter = localStorage.getItem("counter");
@@ -50,14 +52,78 @@ window.addEventListener("load", (e) => {
     localStorage.setItem("counter", count);
   };
 
+  function imgPreloader() {
+    this.images = new Array();
+
+    this.addImages = function (images) {
+      var self = this;
+
+      if (!images) return;
+
+      if (Array.isArray(images)) {
+        images.forEach(function (ele) {
+          var _image = new Image();
+          _image.src = ele;
+          _image.className = "animation";
+          self.images.push(_image);
+        });
+      }
+    };
+
+    return this;
+  }
+
+  function soundPreloader() {
+    this.sounds = new Array();
+
+    this.addSounds = function (sounds) {
+      var self = this;
+
+      if (!sounds) return;
+
+      if (Array.isArray(sounds)) {
+        sounds.forEach(function (ele) {
+          var sound = new Audio();
+          sound.src = ele;
+          self.sounds.push(sound);
+        });
+      }
+    };
+
+    return this;
+  }
+
+  const img1 = new imgPreloader();
+  img1.addImages(["./img/kiryu-1.gif"]);
+  cachedImages.push(img1);
+  const img2 = new imgPreloader();
+  img2.addImages(["./img/kiryu-2.gif"]);
+  cachedImages.push(img2);
+  const img3 = new imgPreloader();
+  img3.addImages(["./img/kiryu-3.gif"]);
+  cachedImages.push(img3);
+
+  const sound1 = new soundPreloader();
+  sound1.addSounds(["./sound/kiryu-1.mp3"]);
+  cachedSounds.push(sound1);
+  const sound2 = new soundPreloader();
+  sound2.addSounds(["./sound/kiryu-2.mp3"]);
+  cachedSounds.push(sound2);
+  const sound3 = new soundPreloader();
+  sound3.addSounds(["./sound/kiryu-3.mp3"]);
+  cachedSounds.push(sound3);
+
   async function fetchAndCacheResources(imageUrl, audioUrl, mediaSelector) {
     try {
-      const imageResponse = await fetch(imageUrl);
+      const imageFullUrl = "http://localhost:5173/" + imageUrl;
+      console.log(imageFullUrl);
+      const imageResponse = await fetch(imageFullUrl);
       if (!imageResponse.ok) {
         throw new Error(`Failed to fetch image: ${imageUrl}`);
       }
+      console.log(imageResponse);
 
-      const audioResponse = await fetch(audioUrl);
+      const audioResponse = await fetch("http://localhost:5173/" + audioUrl);
       if (!audioResponse.ok) {
         throw new Error(`Failed to fetch audio: ${audioUrl}`);
       }
@@ -69,8 +135,16 @@ window.addEventListener("load", (e) => {
 
       // console.log(imageBlob, audioBlob);
 
-      await cache.put(`image${mediaSelector}`, new Response(imageBlob));
-      await cache.put(`audio${mediaSelector}`, new Response(audioBlob));
+      await cache.add(
+        `image${mediaSelector}`,
+        "http://localhost:5173/" + imageUrl
+      );
+      await cache.add(
+        `audio${mediaSelector}`,
+        "http://localhost:5173/" + audioUrl
+      );
+      // await cache.put(`image${mediaSelector}`, new Response(imageBlob));
+      // await cache.put(`audio${mediaSelector}`, new Response(audioBlob));
 
       console.log("Resources cached successfully.");
     } catch (error) {
@@ -95,6 +169,44 @@ window.addEventListener("load", (e) => {
     }
   }
 
+  const playAnimationNew = (mediaSelector) => {
+    console.log(cachedImages[mediaSelector - 1]);
+    const image = cachedImages[mediaSelector - 1].images[0].cloneNode(true);
+
+    const audio = cachedSounds[mediaSelector - 1].sounds[0].cloneNode(true);
+    animationContainer.appendChild(image);
+    audio.volume = 0.5;
+    audio.play();
+
+    timeline([
+      // [
+      //   image,
+      //   { x: "-100%" },
+      //   { duration: 0.001 },
+      //   { easing: "ease-in" },
+      //   { visibility: "visible" },
+      // ],
+      [
+        image,
+        { x: "52vw" },
+        { duration: 1 },
+        { easing: "ease-in" },
+        { transformOrigin: "center center" },
+        // { visibility: "visible" },
+      ],
+      [
+        image,
+        { x: "calc(100vw + 265px)" },
+        { duration: 1 },
+        { easing: "ease-in" },
+      ],
+    ]).finished.then(() => {
+      image.remove();
+      audio.remove();
+      // audioElement.remove();
+    });
+  };
+
   const playAnimation = async (mediaSelector) => {
     // const imageBlob = cachedAssets[image];
     // const audioBlob = cachedAssets[audio];
@@ -111,10 +223,14 @@ window.addEventListener("load", (e) => {
     // console.log(image.blob, audio);
 
     if (image && audio) {
-      const imageUrlBlob = URL.createObjectURL(new Blob([image.blob]));
-      const audioUrlBlob = URL.createObjectURL(new Blob([audio.blob]));
+      const imageUrlBlob = URL.createObjectURL(
+        new Blob([image.blob], { type: "image/gif" })
+      );
+      const audioUrlBlob = URL.createObjectURL(
+        new Blob([audio.blob], { type: "audio/mpeg" })
+      );
 
-      console.log(imageUrlBlob, audioUrlBlob);
+      // console.log(imageUrlBlob, audioUrlBlob);
 
       const imgElement = document.createElement("img");
 
@@ -167,8 +283,8 @@ window.addEventListener("load", (e) => {
       // audioEl.play();
     } else {
       fetchAndCacheResources(
-        `./img/kiryu-${mediaSelector}.gif`,
-        `./sound/kiryu-${mediaSelector}.mp3`,
+        `static/img/kiryu-${mediaSelector}.gif`,
+        `static/sound/kiryu-${mediaSelector}.mp3`,
         mediaSelector
       );
       // fetchAndCacheResources(image1, sound1, mediaSelector);
@@ -181,7 +297,8 @@ window.addEventListener("load", (e) => {
 
     const mediaSelector = Math.floor(Math.random() * 4 + 1);
 
-    playAnimation(mediaSelector === 4 ? 3 : mediaSelector);
+    // playAnimation(mediaSelector === 4 ? 3 : mediaSelector);
+    playAnimationNew(mediaSelector === 4 ? 3 : mediaSelector);
   });
 
   // end of load listener

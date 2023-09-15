@@ -72,6 +72,7 @@ body {
 .animation {
   max-width: 256px;
   position: absolute;
+  left: -256px;
 }
 
 /* #kiryu-tattoo-path {
