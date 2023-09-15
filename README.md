@@ -4,6 +4,8 @@
 
 i was experimenting with gsap and motion one when i got the idea to make a fun project using them so the code is far from perfect or optimized but im planning on cleaning it up later but for now enjoy the kiryu yoshi-yosh!
 
+also currently using random gifs for the lack of a better alternative, and i cant draw :D
+
 ![image](https://preview.redd.it/yb15vgjfr1w71.jpg?auto=webp&s=24c7c3b298c6525d3a9e3097b988922475d65588)
 
 ## Credits
