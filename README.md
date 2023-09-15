@@ -8,6 +8,10 @@ also currently using random gifs for the lack of a better alternative, and i can
 
 ![image](https://preview.redd.it/yb15vgjfr1w71.jpg?auto=webp&s=24c7c3b298c6525d3a9e3097b988922475d65588)
 
+## live website
+
+[here](https://kiryu-game.vercel.app/)
+
 ## Credits
 
 inspiration - [herta kuru](https://github.com/duiqt/herta_kuru/tree/main) by [duiqt](https://github.com/duiqt)
